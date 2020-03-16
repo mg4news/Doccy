@@ -1,6 +1,6 @@
-name := "Matcha"
-
+name := "Doccy"
 version := "0.1"
+organization := "org.mg4news"
 
 scalaVersion := "2.13.1"
 
