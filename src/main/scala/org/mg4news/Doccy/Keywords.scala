@@ -1,4 +1,4 @@
-package com.mg4news.matcha
+package org.mg4news.Doccy
 
 import org.mongodb.scala.MongoCollection
 import org.mongodb.scala.bson.ObjectId

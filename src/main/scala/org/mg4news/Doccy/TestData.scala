@@ -1,4 +1,4 @@
-package com.mg4news.matcha
+package org.mg4news.Doccy
 
 object TestData {
   val users: Seq[(String,String,String)] = Seq(

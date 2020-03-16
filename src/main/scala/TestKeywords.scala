@@ -1,4 +1,5 @@
 import com.mg4news.matcha._
+import org.mg4news.Doccy.{Keywords, TestData}
 
 object TestKeywords {
 

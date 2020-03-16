@@ -1,4 +1,4 @@
-package com.mg4news.matcha
+package org.mg4news.Doccy
 
 import java.time.LocalDateTime
 import org.mongodb.scala.bson.ObjectId

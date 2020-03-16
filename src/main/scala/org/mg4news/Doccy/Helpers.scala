@@ -1,4 +1,4 @@
-package com.mg4news.matcha
+package org.mg4news.Doccy
 
 import java.util.concurrent.TimeUnit
 

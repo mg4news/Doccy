@@ -1,25 +1,26 @@
-package com.mg4news.matcha
+package org.mg4news.Doccy
 
 import org.mongodb.scala.MongoCollection
 import org.mongodb.scala.bson.ObjectId
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Updates.set
-import com.mg4news.matcha.Helpers._
+import Helpers._
 
-// Document for categories. each cat has:
-// - a category name
-// - a detailed category description (defaults to now)
+// Schema for categories. Each document has a single category
+// Categories have:
+// - a name
+// - a description (defaults to now)
 object DocCat {
-  def apply(name: String, description: String = "None"): DocCat =
+  def apply(name: String, description: String): DocCat =
     DocCat(new ObjectId(), name, description)
 }
-case class DocCat(_id: ObjectId, name: String, description: String)
+case class DocCat(_id: ObjectId, name: String, description: String = "None")
 
 // Categories object, conceals the details of the collection
 // All of the functions work in terms of DocXXX, there is no mapping to different representations
 // That neeeds to be done by the caller.
 object Categories extends Schema[DocCat] {
-  val COLL_NAME: String = COLLECTION_WORDS
+  val COLL_NAME: String = COLLECTION_TOPICS
   val collection: MongoCollection[DocCat] = DB.getDb.getCollection(COLL_NAME)
   val KEY_FIELD: String = "name"
 
@@ -35,7 +36,7 @@ object Categories extends Schema[DocCat] {
   }
 
   // For debug, show the whole collection
-  def show():Unit = show[DocCat]
+  def show(): Unit = show[DocCat]
 
   // Gets a list of all the categories by name and description
   def getAll: Seq[DocCat] = getAllDocs[DocCat]
@@ -45,20 +46,18 @@ object Categories extends Schema[DocCat] {
   // If the name exists then the description is simply updated
   def add(cats: Seq[(String, String)]): Unit = {
     // iterate over sequence of key value pairs
-    for (cat <- cats) {
-      if (contains(cat._1)) {
-        collection.updateOne(equal(KEY_FIELD, cat._1), set("description", cat._2)).
+    for (c <- cats) {
+      if (contains(c._1)) {
+        collection.updateOne(equal(KEY_FIELD, c._1), set("description", c._2)).
           printHeadResult("Update Result: ")
       } else {
-        collection.insertOne(DocCat(cat._1, cat._2)).printHeadResult("Add Result: ")
+        collection.insertOne(DocCat(c._1, c._2)).printHeadResult("Add Result: ")
       }
     }
   }
 
   // Deletes a category document from the database based SOLELY on the name, not the description
-  def del(name: String): Unit = if (contains(name)) {
-    collection.deleteOne(equal(KEY_FIELD, name)).printHeadResult("Delete Result: ")
-  }
+  def del(name: String): Unit = delOneByKeyField[DocCat](name)
 
 }
 

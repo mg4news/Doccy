@@ -1,4 +1,4 @@
-package com.mg4news.matcha
+package org.mg4news.Doccy
 
 import org.mongodb.scala.{MongoClient, MongoDatabase}
 import org.mongodb.scala.bson.codecs.Macros._
@@ -15,7 +15,7 @@ object DB {
     classOf[DocUser],
     classOf[DocCat],
     classOf[DocDoc],
-    classOf[DocWord],
+    classOf[DocTopic],
     classOf[DocProj])
   private val codecRegistry = fromRegistries(
     customCodecs,
