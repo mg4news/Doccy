@@ -2,7 +2,7 @@ package org.mg4news
 
 package object Doccy {
   // database name
-  def DATABASE       = "MatchaDB"
+  def DATABASE       = "DOCCY_DB"
 
   // Collection names
   def COLLECTION_CAT    = "CATEGORIES"

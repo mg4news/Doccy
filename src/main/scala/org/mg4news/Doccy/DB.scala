@@ -5,7 +5,7 @@ import org.mongodb.scala.bson.codecs.Macros._
 import org.mongodb.scala.bson.codecs.DEFAULT_CODEC_REGISTRY
 import org.bson.codecs.configuration.CodecRegistries._
 import ch.rasc.bsoncodec.time._
-import com.mg4news.matcha.Helpers._
+import Helpers._
 
 object DB {
 

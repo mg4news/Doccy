@@ -1,10 +1,9 @@
 package org.mg4news.Doccy
 
 import org.mongodb.scala.{Completed, MongoCollection}
-import com.mg4news.matcha.Helpers._
 import org.mongodb.scala.model.Filters.equal
-
 import scala.reflect.ClassTag
+import Helpers._
 
 // Base trait to generalise some of the logic for each document. It may well be a massive intellectual snark hunt,
 // especially given the classtag hoops I had to jump through to make some of this work. But..
