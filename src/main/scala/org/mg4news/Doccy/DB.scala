@@ -12,11 +12,8 @@ object DB {
   // Codecs
   private val javaCodecs = fromCodecs(new LocalDateTimeDateCodec())
   private val customCodecs = fromProviders(
-    classOf[DocUser],
-    classOf[DocCat],
-    classOf[DocDoc],
-    classOf[DocTopic],
-    classOf[DocProj])
+    classOf[DocNameDesc],
+    classOf[DocDoc])
   private val codecRegistry = fromRegistries(
     customCodecs,
     javaCodecs,

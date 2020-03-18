@@ -3,16 +3,6 @@ package org.mg4news.Doccy
 import java.time.LocalDateTime
 import org.mongodb.scala.bson.ObjectId
 
-// Document for users, each user has:
-// - a first name
-// - a last name
-// - an email, used as the unique author identifier in the "Doc" document
-object DocUser {
-  def apply(firstName: String, lastName: String, email: String): DocUser =
-    DocUser(new ObjectId(), firstName, lastName, email)
-}
-case class DocUser(_id: ObjectId, firstName: String, lastName: String, email: String)
-
 // Document for the actual issued document (recursive much?). An issued document has:
 // - a name
 // - a description
