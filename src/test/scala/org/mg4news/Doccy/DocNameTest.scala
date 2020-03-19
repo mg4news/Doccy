@@ -18,16 +18,22 @@ package org.mg4news.Doccy
 
 import org.scalatest._
 import org.mongodb.scala.MongoCollection
+import org.scalatest.featurespec.AnyFeatureSpec
 
 object GenNameDesc extends NameDescSchema {
   val COLL_NAME: String = "TEST_NAME_DESC_COLLECTION"
   val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }
 
-class DocNameTest extends FeatureSpec with GivenWhenThen{
-  feature("Basic functionality tests for NameDescSchema") {
+class DocNameTest extends AnyFeatureSpec with GivenWhenThen{
 
-    scenario("Ensure the collection is empty to begin") {
+  Feature("Basic functionality tests for NameDescSchema") {
+
+    info("As a generic instance (object) of NameDescSchema")
+    info("I want to Test all aspects of the trait")
+    info("So that I can prove that all simple derivations of the trait will work correctly")
+
+    Scenario("Ensure the collection is empty to begin") {
       Given("any set of starting conditions")
       When("destroy() is called")
       GenNameDesc.destroy()
@@ -35,23 +41,23 @@ class DocNameTest extends FeatureSpec with GivenWhenThen{
       assert(GenNameDesc.number == 0)
     }
 
-    scenario("Test single insertion into collection") {
+    Scenario("Test single insertion into collection") {
       Given("the collection is empty")
       assert(GenNameDesc.number == 0)
       When("a name::description is inserted")
-      val name = TestData.full(0)._1
-      val desc = TestData.full(0)._2
+      val name = TestData.full.head._1
+      val desc = TestData.full.head._2
       GenNameDesc.addOne(name,desc)
       Then("the collection contains only the inserted data")
       assert(GenNameDesc.number == 1)
       assert(GenNameDesc.contains(name))
-      assert(GenNameDesc.find(name) != None)
-      val bad = TestData.bad(0)._1
-      assert(GenNameDesc.contains(bad) == false)
-      assert(GenNameDesc.find(bad) == None)
+      assert(GenNameDesc.find(name).isDefined)
+      val bad = TestData.bad.head._1
+      assert(!GenNameDesc.contains(bad))
+      assert(GenNameDesc.find(bad).isEmpty)
     }
 
-    scenario("Test multiple insertion with duplication checks") {
+    Scenario("Test multiple insertion with duplication checks") {
       Given("the collection is empty")
       GenNameDesc.destroy()
       assert(GenNameDesc.number == 0)
@@ -67,14 +73,16 @@ class DocNameTest extends FeatureSpec with GivenWhenThen{
       }
       And ("none of the wrong entries exist")
       for (d <- TestData.bad) {
-        assert(GenNameDesc.contains(d._1) == false)
+        assert(!GenNameDesc.contains(d._1))
       }
 
     }
   }
 
-  info("Dumping the collection")
-  GenNameDesc.show()
+  info("Collection santiy dump:")
+  for (s <- GenNameDesc.getAll) {
+    info(s" - $s")
+  }
   info("Cleaning the collection")
   GenNameDesc.destroy()
   assert(GenNameDesc.number == 0)
