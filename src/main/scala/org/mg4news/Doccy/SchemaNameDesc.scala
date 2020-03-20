@@ -53,21 +53,6 @@ trait NameDescSchema extends Schema[DocNameDesc] {
   // Gets a list of all the categories by name and description
   def getAll: Seq[(String,String)] = getAllDocs[DocNameDesc].map(c => (c.name, c.description))
 
-  // Add a set of name::desc to the collection
-  // This walks though one by one and checks for duplicates based on the name, not the description
-  // If the name exists then the description is simply updated
-  def add(docs: Seq[(String, String)]): Unit = {
-    // iterate over sequence of key value pairs
-    for (d <- docs) {
-      if (contains(d._1)) {
-        collection.updateOne(equal(KEY_FIELD, d._1), set("description", d._2)).
-          printHeadResult("Update Result: ")
-      } else {
-        collection.insertOne(DocNameDesc(d._1, d._2)).printHeadResult("Add Result: ")
-      }
-    }
-  }
-
   // Add a single name::desc to the collection
   // Checks for duplicates
   // If the name exists then the description is simply updated
@@ -79,6 +64,11 @@ trait NameDescSchema extends Schema[DocNameDesc] {
       collection.insertOne(DocNameDesc(name, description)).printHeadResult("Add Result: ")
     }
   }
+
+  // Add a set of name::desc to the collection
+  // This walks though one by one and checks for duplicates based on the name, not the description
+  // If the name exists then the description is simply updated
+  def add(docs: Seq[(String, String)]): Unit = for (d <- docs) addOne(d._1, d._2)
 
   // Deletes a category document from the database based SOLELY on the name, not the description
   def del(name: String): Unit = delOneByKeyField[DocNameDesc](name)

@@ -79,7 +79,7 @@ class DocNameTest extends AnyFeatureSpec with GivenWhenThen{
     }
   }
 
-  info("Collection santiy dump:")
+  info("Collection sanity dump:")
   for (s <- GenNameDesc.getAll) {
     info(s" - $s")
   }

@@ -25,6 +25,6 @@ package object Doccy {
   def COLLECTION_TOPICS = "TOPICS"
   def COLLECTION_USERS  = "USERS"
   def COLLECTION_PROJ   = "PROJECTS"
-  def COLLECTION_MDOCS  = "MATCHA_DOCS"
+  def COLLECTION_DOCS   = "DOCS"
 
 }
