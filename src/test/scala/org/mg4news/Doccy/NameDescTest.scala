@@ -25,7 +25,7 @@ object GenNameDesc extends NameDescSchema {
   val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }
 
-class DocNameTest extends AnyFeatureSpec with GivenWhenThen{
+class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
 
   Feature("Basic functionality tests for NameDescSchema") {
 
@@ -52,7 +52,7 @@ class DocNameTest extends AnyFeatureSpec with GivenWhenThen{
       assert(GenNameDesc.number == 1)
       assert(GenNameDesc.contains(name))
       assert(GenNameDesc.find(name).isDefined)
-      val bad = TestData.bad.head._1
+      val bad = TestData.bad.head
       assert(!GenNameDesc.contains(bad))
       assert(GenNameDesc.find(bad).isEmpty)
     }
@@ -72,8 +72,8 @@ class DocNameTest extends AnyFeatureSpec with GivenWhenThen{
         assert(GenNameDesc.contains(d._1))
       }
       And ("none of the wrong entries exist")
-      for (d <- TestData.bad) {
-        assert(!GenNameDesc.contains(d._1))
+      for (s <- TestData.bad) {
+        assert(!GenNameDesc.contains(s))
       }
 
     }

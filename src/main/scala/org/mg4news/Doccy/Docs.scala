@@ -82,6 +82,8 @@ object Docs extends Schema[DocDoc] {
   // Add a single document to the collection
   // Checks for duplicates
   // If the name exists then the BSON document is simply updated
+  // Note: The followong fields are NEVER updated:
+  // - created (time and date of creation)
   def addOne(doc: DocDoc): Unit = {
     if (contains(doc.name)) {
       collection
@@ -105,6 +107,12 @@ object Docs extends Schema[DocDoc] {
   // Deletes a document from the database based SOLELY on the name
   def del(name: String): Unit = delOneByKeyField[DocDoc](name)
 
+  //--------------------------------------------------------------------------------------------
+  // The rest of the methods dont appear in any object derived from SchemaNameDesc
+  // These are more complex nethods, things like:
+  // - operations based on a field, return sequences of objects
+  //--------------------------------------------------------------------------------------------
+  def descContainsAnyOf(words: Seq[String]): Option[DocDoc] = ???
 }
 
 
