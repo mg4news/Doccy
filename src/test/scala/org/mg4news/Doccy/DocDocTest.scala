@@ -22,10 +22,8 @@ import org.scalatest.featurespec.AnyFeatureSpec
 class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
 
   // Helpers to transform raw sequence data to a document
-  def datumToDoc(d: (String,String,String,String,String,Seq[String])): DocDoc =
-    DocDoc(d._1, d._2, d._3, d._4, d._5, d._6)
   def dataToDocs(ds: Seq[(String,String,String,String,String,Seq[String])]): Seq[DocDoc] =
-    ds.map(datumToDoc(_))
+    ds.map(DocDoc(_))
 
   Feature("Basic functionality tests for Docs object and underlying schema") {
 
@@ -33,7 +31,7 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
       Given("any set of starting conditions")
       When("destroy() is called")
       Docs.destroy()
-      Then("the collection should be empty")
+      Then("the collection should be cleaned, no entries")
       assert(Docs.number == 0)
     }
 
@@ -41,7 +39,7 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
       Given("the collection is empty")
       assert(Docs.number == 0)
       When("one document is inserted")
-      Docs.addOne(datumToDoc(TestData.docs_with_dups.head))
+      Docs.addOne(DocDoc(TestData.docs_with_dups.head))
       Then("the collection contains one document")
       assert(Docs.number == 1)
       And("that document is the one that was inserted")
@@ -51,8 +49,6 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
         val v = res.get
         info(s" - inserted: $v")
       }
-    }
-
     }
 
     Scenario("Test single deletion") {
@@ -77,10 +73,27 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
       for (d <- TestData.docs_no_dups) {
         assert(Docs.contains(d._1))
       }
-      And ("none of the wrong entries exist")
+      And("none of the wrong entries exist")
       for (s <- TestData.bad) {
         assert(!Docs.contains(s))
       }
+    }
+
+    Scenario("Test the findBytopic logic") {
+      Given("the collection has multiple entries")
+      val entries = Docs.number
+      assert(entries > 1)
+      info(s" - collection has $entries entries")
+      When("i search by some topics")
+      info(s" - using: ${TestData.some_topics}")
+      val res = Docs.findByTopic(TestData.some_topics).getOrElse(Seq())
+      Then("i get a subset of the entries")
+      info(s" - got ${res.length} results")
+      for (d <- res) {
+        info(s" - $d")
+      }
+    }
+
   }
 
   info("Collection sanity dump:")

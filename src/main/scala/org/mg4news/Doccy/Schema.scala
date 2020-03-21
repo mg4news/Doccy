@@ -41,20 +41,22 @@ trait Schema[T] {
   def getAllDocs[T](implicit t:ClassTag[T]): Seq[T] =
     collection.find[T]().results()
 
-  // Find a document in a collection by an arbitrary field value
+  // Find documents in a collection by an arbitrary field value
+  // Does NOT stop after the first result. This does not assume the key field
   def findByField[T](field: String, value: String)(implicit t: ClassTag[T]): Seq[T] =
-    collection.find[T](equal(field, value)).first().results()
+    collection.find[T](equal(field, value)).results()
 
   // Find a document by key field value
-  // Specific case of findByField
+  // Given that the key field is unique, this stops after the first result
   def findByKeyField[T](value: String)(implicit t: ClassTag[T]): Seq[T] =
-    findByField[T](KEY_FIELD, value)
+    collection.find[T](equal(KEY_FIELD, value)).first().results()
 
-  // Determine if a document exists in a collection using an arbitrary field value
-  def containsField[T](field: String, value: String)(implicit t: ClassTag[T]): Boolean = findByField[T](field, value) match {
-    case h::_ => true
-    case _ => false
-  }
+  // Determine if at least one document exists in a collection using an arbitrary field value
+  def containsField[T](field: String, value: String)(implicit t: ClassTag[T]): Boolean =
+    collection.find[T](equal(field, value)).first().results() match {
+      case h::_ => true
+      case _ => false
+    }
 
   // Determine if a document exists in the collection using only the key field as parameter
   // Specific case of containsField
