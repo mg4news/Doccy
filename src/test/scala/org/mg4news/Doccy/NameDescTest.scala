@@ -32,6 +32,7 @@ class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
     info("As a generic instance (object) of NameDescSchema")
     info("I want to Test all aspects of the trait")
     info("So that I can prove that all simple derivations of the trait will work correctly")
+    info(" ")
 
     Scenario("Ensure the collection is empty to begin") {
       Given("any set of starting conditions")
@@ -39,6 +40,7 @@ class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
       GenNameDesc.destroy()
       Then("the collection should be empty")
       assert(GenNameDesc.number == 0)
+      info(" ")
     }
 
     Scenario("Test single insertion into collection") {
@@ -55,6 +57,7 @@ class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
       val bad = TestData.bad.head
       assert(!GenNameDesc.contains(bad))
       assert(GenNameDesc.find(bad).isEmpty)
+      info(" ")
     }
 
     Scenario("Test multiple insertion with duplication checks") {
@@ -75,7 +78,7 @@ class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
       for (s <- TestData.bad) {
         assert(!GenNameDesc.contains(s))
       }
-
+      info(" ")
     }
   }
 
@@ -87,4 +90,6 @@ class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
   GenNameDesc.destroy()
   assert(GenNameDesc.number == 0)
 
+  info(" ")
+  info(" ")
 }

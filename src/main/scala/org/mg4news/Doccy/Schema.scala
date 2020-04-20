@@ -54,7 +54,7 @@ trait Schema[T] {
   // Determine if at least one document exists in a collection using an arbitrary field value
   def containsField[T](field: String, value: String)(implicit t: ClassTag[T]): Boolean =
     collection.find[T](equal(field, value)).first().results() match {
-      case h::_ => true
+      case _::_ => true
       case _ => false
     }
 
@@ -65,8 +65,9 @@ trait Schema[T] {
 
   // Delete the first document where the specified filed has the specified value
   def delOneByField[T](field: String, value: String)(implicit t: ClassTag[T]): Unit =
-    if (containsField[T](KEY_FIELD, value))
+    if (containsField[T](KEY_FIELD, value)) {
       collection.deleteOne(equal(KEY_FIELD, value)).printHeadResult("Delete Result: ")
+    }
 
   // Delete the first document matching the key field value
   def delOneByKeyField[T](value: String)(implicit t: ClassTag[T]): Unit =

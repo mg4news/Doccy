@@ -38,11 +38,12 @@ object DocDoc {
              author: String,
              proj: String,
              category: String,
-             topics: Seq[String]): DocDoc =
+             topics: Set[String]): DocDoc =
     DocDoc(new ObjectId(), name, description, author, proj, category, topics, created=LocalDateTime.now())
 
-  def apply( ds: (String,String,String,String,String,Seq[String])): DocDoc =
+  def apply( ds: (String,String,String,String,String,Set[String])): DocDoc =
     DocDoc(new ObjectId(), ds._1, ds._2, ds._3, ds._4, ds._5, ds._6, created=LocalDateTime.now())
+
 }
 case class DocDoc(
   _id: ObjectId,
@@ -51,7 +52,7 @@ case class DocDoc(
   author: String,
   proj: String,
   category: String,
-  topics: Seq[String],
+  topics: Set[String],
   created: LocalDateTime)
 
 // Object for the Docs document type. Most of the functions work in terms of the DocDoc case class type.
@@ -117,8 +118,16 @@ object Docs extends Schema[DocDoc] {
 
   // Finds all documents where one or more of the topics provided match a topic in the document
   // Because the topics are in a sequence, we need to extract all and do the filtering "above ground"
-  def findByTopic(topics: Seq[String]): Option[Seq[DocDoc]] = {
+  def findByAnyTopics(topics: Set[String]): Option[Seq[DocDoc]] = {
     val res = getAll.filter(_.topics.intersect(topics).nonEmpty)
+    if (res.nonEmpty) Some(res) else None
+  }
+
+  // Finds all documents where all of the topics provided are in the list of topics in the document
+  // Because the topics are in a sequence, we need to extract all and do the filtering "above ground"
+  def findByAllTopics(topics: Set[String]): Option[Seq[DocDoc]] = {
+    def containsAllOf(d: DocDoc): Boolean = topics.subsetOf(d.topics)
+    val res = getAll.filter(containsAllOf)
     if (res.nonEmpty) Some(res) else None
   }
 

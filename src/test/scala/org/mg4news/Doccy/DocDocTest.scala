@@ -22,10 +22,11 @@ import org.scalatest.featurespec.AnyFeatureSpec
 class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
 
   // Helpers to transform raw sequence data to a document
-  def dataToDocs(ds: Seq[(String,String,String,String,String,Seq[String])]): Seq[DocDoc] =
+  def dataToDocs(ds: Seq[(String,String,String,String,String,Set[String])]): Seq[DocDoc] =
     ds.map(DocDoc(_))
 
   Feature("Basic functionality tests for Docs object and underlying schema") {
+    info(" ")
 
     Scenario("Ensure the collection is empty to begin") {
       Given("any set of starting conditions")
@@ -33,6 +34,7 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
       Docs.destroy()
       Then("the collection should be cleaned, no entries")
       assert(Docs.number == 0)
+      info(" ")
     }
 
     Scenario("Test single insertion") {
@@ -49,6 +51,7 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
         val v = res.get
         info(s" - inserted: $v")
       }
+      info(" ")
     }
 
     Scenario("Test single deletion") {
@@ -58,6 +61,7 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
       Docs.del(TestData.docs_with_dups.head._1)
       Then("the collection is empty")
       assert(Docs.number == 0)
+      info(" ")
     }
 
     Scenario("Test multiple insertion with duplication checks") {
@@ -77,21 +81,39 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
       for (s <- TestData.bad) {
         assert(!Docs.contains(s))
       }
+      info(" ")
     }
 
-    Scenario("Test the findBytopic logic") {
+    Scenario("Test the findByAnyTopics logic") {
       Given("the collection has multiple entries")
       val entries = Docs.number
       assert(entries > 1)
       info(s" - collection has $entries entries")
-      When("i search by some topics")
+      When("i search by any topics in the list")
       info(s" - using: ${TestData.some_topics}")
-      val res = Docs.findByTopic(TestData.some_topics).getOrElse(Seq())
+      val res = Docs.findByAnyTopics(TestData.some_topics).getOrElse(Seq())
       Then("i get a subset of the entries")
       info(s" - got ${res.length} results")
       for (d <- res) {
         info(s" - $d")
       }
+      info(" ")
+    }
+
+    Scenario("Test the findByAllTopics logic") {
+      Given("the collection has multiple entries")
+      val entries = Docs.number
+      assert(entries > 1)
+      info(s" - collection has $entries entries")
+      When("i search by all topics in the list")
+      info(s" - using: ${TestData.some_topics}")
+      val res = Docs.findByAllTopics(TestData.some_topics).getOrElse(Seq())
+      Then("i get a subset of the entries")
+      info(s" - got ${res.length} results")
+      for (d <- res) {
+        info(s" - $d")
+      }
+      info(" ")
     }
 
   }
@@ -103,4 +125,8 @@ class DocDocTest  extends AnyFeatureSpec with GivenWhenThen {
   info("Cleaning the collection")
   Docs.destroy()
   assert(Docs.number == 0)
+
+  // Blank line at the end
+  info(" ")
+  info(" ")
 }
