@@ -14,32 +14,13 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 //==============================================================================================
-package org.mg4news.Doccy
+package org.mg4news.doccy
 
-import org.mongodb.scala.{MongoClient, MongoDatabase}
-import org.mongodb.scala.bson.codecs.Macros._
-import org.mongodb.scala.bson.codecs.DEFAULT_CODEC_REGISTRY
-import org.bson.codecs.configuration.CodecRegistries._
-import ch.rasc.bsoncodec.time._
-import Helpers._
+import org.mongodb.scala.MongoCollection
 
-object DB {
-
-  // Codecs
-  private val javaCodecs = fromCodecs(new LocalDateTimeDateCodec())
-  private val customCodecs = fromProviders(
-    classOf[DocNameDesc],
-    classOf[DocDoc])
-  private val codecRegistry = fromRegistries(
-    customCodecs,
-    javaCodecs,
-    DEFAULT_CODEC_REGISTRY)
-
-  // Database client
-  private val mongoClient: MongoClient = MongoClient()
-  private val database = mongoClient.getDatabase(DATABASE).withCodecRegistry(codecRegistry)
-
-  // Public functions and values
-  def getDb: MongoDatabase = database
-  def printCollections(): Unit = database.listCollectionNames().printResults("Collection Names: ")
+// Topics object. conceals the details of the collection
+// A Topic is is an instance of the NameDescSchema
+object Topics extends NameDescSchema {
+  val COLL_NAME: String = COLLECTION_TOPICS
+  val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }

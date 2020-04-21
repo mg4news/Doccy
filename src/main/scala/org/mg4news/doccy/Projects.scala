@@ -14,17 +14,13 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 //==============================================================================================
-package org.mg4news
+package org.mg4news.doccy
 
-package object Doccy {
-  // database name
-  def DATABASE       = "DOCCY_DB"
+import org.mongodb.scala.MongoCollection
 
-  // Collection names
-  def COLLECTION_CAT    = "CATEGORIES"
-  def COLLECTION_TOPICS = "TOPICS"
-  def COLLECTION_USERS  = "USERS"
-  def COLLECTION_PROJ   = "PROJECTS"
-  def COLLECTION_DOCS   = "DOCS"
-
+// Projects object. conceals the details of the collection
+// A Project is is an instance of the NameDescSchema
+object Projects extends NameDescSchema {
+  val COLL_NAME: String = COLLECTION_PROJ
+  val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }

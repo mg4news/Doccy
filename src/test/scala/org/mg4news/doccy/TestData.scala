@@ -1,4 +1,4 @@
-package org.mg4news.Doccy
+package org.mg4news.doccy
 
 object TestData {
 

@@ -14,13 +14,13 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 //==============================================================================================
-package org.mg4news.Doccy
+package org.mg4news.doccy
 
 import org.mongodb.scala.MongoCollection
 
-// Projects object. conceals the details of the collection
-// A Project is is an instance of the NameDescSchema
-object Projects extends NameDescSchema {
-  val COLL_NAME: String = COLLECTION_PROJ
+// Users object. conceals the details of the collection
+// A User is is an instance of the NameDescSchema
+object Users extends NameDescSchema {
+  val COLL_NAME: String = COLLECTION_USERS
   val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }

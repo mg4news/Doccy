@@ -14,7 +14,7 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 //==============================================================================================
-package org.mg4news.Doccy
+package org.mg4news.doccy
 
 import java.util.concurrent.TimeUnit
 
@@ -24,7 +24,8 @@ import org.mongodb.scala._
 
 object Helpers {
 
-  val DURATION_S = 10
+  val TEN_SEC  = 10
+  val FIVE_SEC = 5
 
   implicit class DocumentObservable[C](val observable: Observable[Document]) extends ImplicitObservable[Document] {
     override val converter: Document => String = doc => doc.toJson
@@ -38,8 +39,8 @@ object Helpers {
     val observable: Observable[C]
     val converter: C => String
 
-    def results(): Seq[C] = Await.result(observable.toFuture(), Duration(DURATION_S, TimeUnit.SECONDS))
-    def headResult(): C = Await.result(observable.head(), Duration(DURATION_S, TimeUnit.SECONDS))
+    def results(): Seq[C] = Await.result(observable.toFuture(), Duration(TEN_SEC, TimeUnit.SECONDS))
+    def headResult(): C = Await.result(observable.head(), Duration(TEN_SEC, TimeUnit.SECONDS))
     def printResults(initial: String = ""): Unit = {
       if (initial.length > 0) print(initial)
       results().foreach(res => println(converter(res)))
@@ -48,7 +49,7 @@ object Helpers {
   }
 
   // Execute for a single result
-  private val waitDuration = Duration(DURATION_S, TimeUnit.SECONDS)
+  private val waitDuration = Duration(FIVE_SEC, TimeUnit.SECONDS)
   implicit class SingleObservableExecutor[T](observable: SingleObservable[T]) {
     def result(): T = Await.result(observable.toFuture(), waitDuration)
   }

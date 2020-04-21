@@ -14,7 +14,7 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 //==============================================================================================
-package org.mg4news.Doccy
+package org.mg4news.doccy
 
 import org.mongodb.scala.{Completed, MongoCollection}
 import org.mongodb.scala.model.Filters.equal
@@ -27,9 +27,9 @@ import Helpers._
 // - there is some reusability
 // - I feel good about at least giving a shit..
 trait Schema[T] {
-  def collection: MongoCollection[T]
-  def COLL_NAME: String
-  def KEY_FIELD: String
+  val collection: MongoCollection[T]
+  val COLL_NAME: String
+  val KEY_FIELD: String
 
   // Counts the number of elements in the collection
   def number: Long = collection.countDocuments().result()

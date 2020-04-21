@@ -1,4 +1,4 @@
-import org.mg4news.Doccy._
+import org.mg4news.doccy._
 
 object Main {
 
@@ -11,5 +11,4 @@ object Main {
   def main(args: Array[String]): Unit = {
     println("Doccy")
   }
-
 }

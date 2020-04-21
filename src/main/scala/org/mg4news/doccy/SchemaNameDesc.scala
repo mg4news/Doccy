@@ -14,7 +14,7 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 //==============================================================================================
-package org.mg4news.Doccy
+package org.mg4news.doccy
 
 import org.mongodb.scala.bson.ObjectId
 import org.mongodb.scala.model.Filters.equal

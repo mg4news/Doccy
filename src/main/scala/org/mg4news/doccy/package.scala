@@ -1,4 +1,4 @@
-//==============================================================================================
+// ==============================================================================================
 // This is free and unencumbered software released into the public domain.
 //
 // Anyone is free to copy, modify, publish, use, compile, sell, or distribute this software,
@@ -8,19 +8,23 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
 // BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 // NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
-//==============================================================================================
-package org.mg4news.Doccy
+// ==============================================================================================
+package org.mg4news
 
-import org.mongodb.scala.MongoCollection
+package object doccy {
+  // database name
+  val DATABASE       = "DOCCY_DB"
 
-// Users object. conceals the details of the collection
-// A User is is an instance of the NameDescSchema
-object Users extends NameDescSchema {
-  val COLL_NAME: String = COLLECTION_USERS
-  val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
+  // Collection names
+  val COLLECTION_CAT    = "CATEGORIES"
+  val COLLECTION_TOPICS = "TOPICS"
+  val COLLECTION_USERS  = "USERS"
+  val COLLECTION_PROJ   = "PROJECTS"
+  val COLLECTION_DOCS   = "DOCS"
+
 }
