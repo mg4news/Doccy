@@ -53,16 +53,20 @@ case class DocDoc(
   proj: String,
   category: String,
   topics: Set[String],
-  created: LocalDateTime)
+  created: LocalDateTime) {
+
+  // Generates the immutable ID
+  def generateID(): String = ???
+
+}
 
 // Object for the Docs document type. Most of the functions work in terms of the DocDoc case class type.
 // This is because it is easier manage the complexity in a class
 object Docs extends Schema[DocDoc] {
   val KEY_FIELD = "name"
-  val COLL_NAME: String = COLLECTION_DOCS
+  val COLL_NAME: String = STR_DOCS
   val collection: MongoCollection[DocDoc] = DB.getDb.getCollection(COLL_NAME)
 
-  def generateID(): String = ???
 
   // For debug, show the whole collection
   def show(): Unit = show[DocDoc]
@@ -85,7 +89,7 @@ object Docs extends Schema[DocDoc] {
   // Add a single document to the collection
   // Checks for duplicates
   // If the name exists then the BSON document is simply updated
-  // Note: The followong fields are NEVER updated:
+  // Note: The following fields are NEVER updated:
   // - created (time and date of creation)
   def addOne(doc: DocDoc): Unit = {
     if (contains(doc.name)) {
@@ -111,7 +115,7 @@ object Docs extends Schema[DocDoc] {
   def del(name: String): Unit = delOneByKeyField[DocDoc](name)
 
   //--------------------------------------------------------------------------------------------
-  // The rest of the methods dont appear in any object derived from SchemaNameDesc
+  // The rest of the methods don't appear in any object derived from SchemaNameDesc
   // These are more complex methods, things like:
   // - operations based on a field, return options of sequences of objects
   //--------------------------------------------------------------------------------------------

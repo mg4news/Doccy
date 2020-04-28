@@ -20,8 +20,10 @@ import org.mongodb.scala.MongoCollection
 
 // Categories object, conceals the details of the collection
 // A Category is an instance of the NameDescSchema
+// - name       : One word document category name
+// - description: Description of category
 object Categories extends NameDescSchema {
-  val COLL_NAME: String = COLLECTION_TOPICS
+  val COLL_NAME: String = STR_CATEGORIES
   val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }
 

@@ -18,7 +18,6 @@ package org.mg4news.doccy
 
 import org.mongodb.scala.{MongoClient, MongoDatabase}
 import org.mongodb.scala.bson.codecs.Macros._
-import org.mongodb.scala.bson.codecs.DEFAULT_CODEC_REGISTRY
 import org.bson.codecs.configuration.CodecRegistries._
 import ch.rasc.bsoncodec.time._
 import Helpers._
@@ -33,7 +32,7 @@ object DB {
   private val codecRegistry = fromRegistries(
     customCodecs,
     javaCodecs,
-    DEFAULT_CODEC_REGISTRY)
+    MongoClient.DEFAULT_CODEC_REGISTRY)
 
   // Database client
   private val mongoClient: MongoClient = MongoClient()

@@ -20,11 +20,10 @@ package object doccy {
   // database name
   val DATABASE       = "DOCCY_DB"
 
-  // Collection names
-  val COLLECTION_CAT    = "CATEGORIES"
-  val COLLECTION_TOPICS = "TOPICS"
-  val COLLECTION_USERS  = "USERS"
-  val COLLECTION_PROJ   = "PROJECTS"
-  val COLLECTION_DOCS   = "DOCS"
-
+  // String names. Used in collections, REST API, etc
+  val STR_CATEGORIES = "CATEGORIES"
+  val STR_TOPICS     = "TOPICS"
+  val STR_AUTHORS    = "AUTHORS"
+  val STR_PROJECTS   = "PROJECTS"
+  val STR_DOCS       = "DOCS"
 }

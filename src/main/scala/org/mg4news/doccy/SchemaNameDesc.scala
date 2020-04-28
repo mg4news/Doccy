@@ -50,8 +50,8 @@ trait NameDescSchema extends Schema[DocNameDesc] {
   // For debug, show the whole collection
   def show(): Unit = show[DocNameDesc]
 
-  // Gets a list of all the categories by name and description
-  def getAll: Seq[(String,String)] = getAllDocs[DocNameDesc].map(c => (c.name, c.description))
+  // Gets a list of all the categories, return the class
+  def getAll: Seq[DocNameDesc] = getAllDocs[DocNameDesc]
 
   // Add a single name::desc to the collection
   // Checks for duplicates

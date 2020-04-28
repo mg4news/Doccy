@@ -21,6 +21,6 @@ import org.mongodb.scala.MongoCollection
 // Projects object. conceals the details of the collection
 // A Project is is an instance of the NameDescSchema
 object Projects extends NameDescSchema {
-  val COLL_NAME: String = COLLECTION_PROJ
+  val COLL_NAME: String = STR_PROJECTS
   val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }

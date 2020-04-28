@@ -14,16 +14,15 @@
 // This is a simplified version of UNLICENSE.
 // For more information, please refer to <http://unlicense.org/>
 // ==============================================================================================
+package org.mg4news.doccy
 
-object Main {
+import org.mongodb.scala.MongoCollection
 
-  /**
-   * Run this main method to see the output of this quick example.
-   *
-   * @param args takes an optional single argument for the connection string
-   * @throws Throwable if an operation fails
-   */
-  def main(args: Array[String]): Unit = {
-    println("Doccy")
-  }
+// Authors object. conceals the details of the collection
+// An author is is an instance of the NameDescSchema
+// - name       : One word author user name (e.g. jsmith)
+// - description: Full name (e.g. John Smith)
+object Authors extends NameDescSchema {
+  val COLL_NAME: String = STR_AUTHORS
+  val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
 }

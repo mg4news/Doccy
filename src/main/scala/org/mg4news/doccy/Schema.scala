@@ -16,7 +16,7 @@
 // ==============================================================================================
 package org.mg4news.doccy
 
-import org.mongodb.scala.{Completed, MongoCollection}
+import org.mongodb.scala.MongoCollection
 import org.mongodb.scala.model.Filters.equal
 import scala.reflect.ClassTag
 import Helpers._
@@ -35,7 +35,7 @@ trait Schema[T] {
   def number: Long = collection.countDocuments().result()
 
   // Kill the entire collection
-  def destroy(): Completed = collection.drop().headResult()
+  def destroy(): Unit = collection.drop().printResults()
 
   // Gets all the documents in the colelction
   def getAllDocs[T](implicit t:ClassTag[T]): Seq[T] =
