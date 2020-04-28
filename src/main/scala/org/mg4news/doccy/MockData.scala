@@ -16,40 +16,29 @@
 // ==============================================================================================
 package org.mg4news.doccy
 
-object Mockit {
-  def load(): Unit = {
-    if (Categories.number == 0) {
-      Categories.add(MockData.categories)
-      assert(Categories.number == MockData.categories.length)
-    }
-    if (Authors.number == 0) {
-      Authors.add(MockData.authors)
-      assert(Authors.number == MockData.authors.length)
-    }
-    if (Topics.number == 0) {
-      Topics.add(MockData.topics)
-      assert(Topics.number == MockData.topics.length)
-    }
-  }
+// Mock data object, used with the main app until the point we transition to
+// the web interface. At that point we can actually add data in a useful
+// and representative way
+object MockData {
+  val categories: Seq[(String, String)] = Seq(
+    ("PRD", "Product Requirements Document"),
+    ("Whitepaper", "Technical document that analyses a subject, and derives a set of recommendations"),
+    ("ADD", "Architecture Design Document"),
+    ("Presentation", "Google Slides, Microsoft Powerpoint or Apple Keynote"),
+    ("Spreadsheet", "Google sheets, Microsoft Excel, Apple Numbers"),
+    ("Recipe", "Ingredients and instructions"),
+    ("Other", "General document, no specific category")
+  )
 
-  def unload(): Unit = {
-    Categories.destroy()
-    assert(Categories.number == 0)
-    Authors.destroy()
-    assert(Authors.number == 0)
-    Topics.destroy()
-    assert(Topics.number == 0)
-  }
-}
+  val authors: Seq[(String,String)] = Seq(
+    ("aeinstein", "Albert Einstein"),
+    ("mgibson", "Martin Gibson"),
+    ("jpublic", "John Q Public")
+  )
 
-object Main extends App {
-
-  // Load - if needed
-  Mockit.load()
-
-  // Do stuff
-  Categories.show()
-
-  // Until HTTP4S is in place, kill all collections on exit..
-  Mockit.unload()
+  val topics: Seq[(String,String)] = Seq(
+    ("Brewing", "Anything to do with brewing"),
+    ("Scala", "Related to Scala or Dotty (Scala 3)"),
+    ("Streaming", "Related to media streaming, i.e. CMAF, DASH")
+  )
 }

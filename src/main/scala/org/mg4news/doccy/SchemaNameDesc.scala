@@ -31,31 +31,50 @@ object DocNameDesc {
 }
 case class DocNameDesc(_id: ObjectId, name: String, description: String = "None")
 
-// NameDescSchema trait. Used to derive a range of objects
-// All of the functionality for documents of the type name::description is centralised here
+/**
+ * NameDescSchema trait. Used to derive a range of object
+ * All of the functionality for documents of the pattern (name::description) is centralised here
+ */
 trait NameDescSchema extends Schema[DocNameDesc] {
   val KEY_FIELD = "name"
 
   // Checks for the presence of the name (not description) in the collection
-  def contains(value: String): Boolean = containsKeyField[DocNameDesc](value)
+  /**
+   * Checks for the presence of the name (not description) in the collection
+   * @param name
+   * @return true if the entry exists, else false
+   */
+  def contains(name: String): Boolean = containsKeyField[DocNameDesc](name)
 
-  // Finds a name::description option:
-  // - Some(name,description) if the category exists
-  // - None if the keyword does not exist
+  /**
+   * Finds a name::description option by name in a collection
+   * @param name Name string
+   * @return Some(name,description) if the name exists
+   * @return None if the name does not exist
+   */
   def find(name: String): Option[(String,String)] = findByKeyField[DocNameDesc](name) match {
     case h::_ => Some((h.name,h.description))
     case _    => None
   }
 
-  // For debug, show the whole collection
+  /**
+   * For debug, shows the whole collection
+   */
   def show(): Unit = show[DocNameDesc]
 
-  // Gets a list of all the categories, return the class
+  /**
+   * Gets a list of all the categories
+   * @return A sequence of DocNameDesc objects
+   */
   def getAll: Seq[DocNameDesc] = getAllDocs[DocNameDesc]
 
-  // Add a single name::desc to the collection
-  // Checks for duplicates
-  // If the name exists then the description is simply updated
+  /**
+   * Adds a single name/description pair to the collection. Checks for duplicates.
+   * If the "name" field exists, then the description field is updated. If the name
+   * is not found in the collection, the new (name,description) is inserted
+   * @param name Name string
+   * @param description Descriptive string
+   */
   def addOne(name: String, description: String): Unit = {
     if (contains(name)) {
       collection.updateOne(equal(KEY_FIELD, name), set("description", description)).
@@ -65,12 +84,19 @@ trait NameDescSchema extends Schema[DocNameDesc] {
     }
   }
 
-  // Add a set of name::desc to the collection
-  // This walks though one by one and checks for duplicates based on the name, not the description
-  // If the name exists then the description is simply updated
+  /**
+   * Bulk adds a sequence of (name,description) pairs to the collection. Uses the @see addOne method
+   * to handle duplicate checking
+   * @param docs A sequence of (name,description) pairs
+   */
   def add(docs: Seq[(String, String)]): Unit = for (d <- docs) addOne(d._1, d._2)
 
-  // Deletes a category document from the database based SOLELY on the name, not the description
+  // Deletes a document from the database based SOLELY on the name, not the description
+
+  /**
+   * Deletes an element from the collection, based purely on the name field
+   * @param name Name string, i.e. the "name" field
+   */
   def del(name: String): Unit = delOneByKeyField[DocNameDesc](name)
 }
 
