@@ -1,10 +1,11 @@
 // Library versions
 
-val ScalacticVersion  = "3.1.1"
 val ScalatestVersion  = "3.1.1"
 val ScalacheckVersion = "1.14.3"
 val Http4sVersion     = "0.21.3"
-val CirceVersion      = "0.13.0"
+val CatsVersion       = "2.1.3"
+val ZioVersion        = "1.0.0-RC18-2"
+val ZioCatsVersion    = "2.0.0.0-RC12"
 val Specs2Version     = "4.9.3"
 val LogbackVersion    = "1.2.3"
 
@@ -21,33 +22,28 @@ lazy val root = (project in file(".")).settings(
   version := "0.2.0",
   scalaVersion := ScalaVersion,
   libraryDependencies ++= Seq(
+    // Main application stuff
     "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
-    "ch.rasc"           % "bsoncodec"            % "1.0.1",
+    "ch.rasc"           % "bsoncodec"           % "1.0.1",
+    "com.typesafe"      % "config"              % "1.4.0",
 
-    "org.scalactic"     %% "scalactic"           % ScalacticVersion,
+    // My test dependencies
     "org.scalatest"     %% "scalatest"           % ScalatestVersion % "test",
     "org.scalacheck"    %% "scalacheck"          % ScalacheckVersion % "test",
+
+
+
+    // Dependencies for a ZIO HTTP4S service
+    "org.typelevel"     %% "cats-effect"         % CatsVersion,
+    "dev.zio"           %% "zio"                 % ZioVersion,
+    "dev.zio"           %% "zio-interop-cats"    % ZioCatsVersion,
     "org.http4s"        %% "http4s-blaze-server" % Http4sVersion,
-    "org.http4s"        %% "http4s-blaze-client" % Http4sVersion,
     "org.http4s"        %% "http4s-circe"        % Http4sVersion,
     "org.http4s"        %% "http4s-dsl"          % Http4sVersion,
-    "io.circe"          %% "circe-generic"       % CirceVersion,
-    "org.specs2"        %% "specs2-core"         % Specs2Version % "test",
     "ch.qos.logback"    %  "logback-classic"     % LogbackVersion
   ),
-  addCompilerPlugin("org.typelevel" %% "kind-projector" % KindProjectorVersion cross CrossVersion.full),
-  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % BetterMonadicVersion)
 )
 
-//val MongoVersion      = "2.9.0"
-//val BsonCodecVersion  = "1.0.1"
-//"org.typelevel"     %% "cats-core"           % CatsVersion,
-//libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % MongoVersion
-//libraryDependencies += "org.scalactic" %% "scalactic" % ScalacticVersion
-//libraryDependencies += "org.scalatest" %% "scalatest" % ScalatestVersion % "test"
-//libraryDependencies += "org.scalacheck" %% "scalacheck" % ScalacheckVersion % "test"
-//libraryDependencies += "ch.rasc" % "bsoncodec" % BsonCodecVersion
-//     "ch.rasc"           % "bsoncodec"            % BsonCodecVersion,
 scalacOptions ++= Seq(
   "-deprecation",
   "-encoding", "UTF-8",

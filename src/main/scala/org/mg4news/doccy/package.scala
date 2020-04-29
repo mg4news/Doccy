@@ -16,14 +16,25 @@
 // ==============================================================================================
 package org.mg4news
 
+import com.typesafe.config.{Config, ConfigFactory}
+
 package object doccy {
+
+  // Config stuff, all names and settings are there
+  val config: Config = ConfigFactory.load()
+  assert(!config.isEmpty)
+  val db_config = config.getConfig("database")
+  assert(!db_config.isEmpty)
+  val srv_config = config.getConfig("server")
+  assert(!srv_config.isEmpty)
+
   // database name
-  val DATABASE       = "DOCCY_DB"
+  val DATABASE       = db_config.getString("database_name")
 
   // String names. Used in collections, REST API, etc
-  val STR_CATEGORIES = "CATEGORIES"
-  val STR_TOPICS     = "TOPICS"
-  val STR_AUTHORS    = "AUTHORS"
-  val STR_PROJECTS   = "PROJECTS"
-  val STR_DOCS       = "DOCS"
+  val STR_CATEGORIES = db_config.getString("categories_name")
+  val STR_TOPICS     = db_config.getString("topics_name")
+  val STR_AUTHORS    = db_config.getString("authors_name")
+  val STR_PROJECTS   = db_config.getString("projects_name")
+  val STR_DOCS       = db_config.getString("docs_name")
 }
