@@ -2,11 +2,6 @@
 
 val ScalatestVersion  = "3.1.1"
 val ScalacheckVersion = "1.14.3"
-val Http4sVersion     = "0.21.3"
-val CatsVersion       = "2.1.3"
-val ZioVersion        = "1.0.0-RC18-2"
-val ZioCatsVersion    = "2.0.0.0-RC12"
-val Specs2Version     = "4.9.3"
 val LogbackVersion    = "1.2.3"
 
 // Plugin versions
@@ -26,21 +21,11 @@ lazy val root = (project in file(".")).settings(
     "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
     "ch.rasc"           % "bsoncodec"           % "1.0.1",
     "com.typesafe"      % "config"              % "1.4.0",
+    "ch.qos.logback"    % "logback-classic"     % LogbackVersion,
 
     // My test dependencies
-    "org.scalatest"     %% "scalatest"           % ScalatestVersion % "test",
-    "org.scalacheck"    %% "scalacheck"          % ScalacheckVersion % "test",
-
-
-
-    // Dependencies for a ZIO HTTP4S service
-    "org.typelevel"     %% "cats-effect"         % CatsVersion,
-    "dev.zio"           %% "zio"                 % ZioVersion,
-    "dev.zio"           %% "zio-interop-cats"    % ZioCatsVersion,
-    "org.http4s"        %% "http4s-blaze-server" % Http4sVersion,
-    "org.http4s"        %% "http4s-circe"        % Http4sVersion,
-    "org.http4s"        %% "http4s-dsl"          % Http4sVersion,
-    "ch.qos.logback"    %  "logback-classic"     % LogbackVersion
+    "org.scalatest"     %% "scalatest"          % ScalatestVersion % "test",
+    "org.scalacheck"    %% "scalacheck"         % ScalacheckVersion % "test"
   ),
 )
 
