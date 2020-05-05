@@ -49,11 +49,11 @@ trait NameDescSchema extends Schema[DocNameDesc] {
   /**
    * Finds a name::description option by name in a collection
    * @param name Name string
-   * @return Some(name,description) if the name exists
+   * @return Some(DocNameDesc) if the name exists
    * @return None if the name does not exist
    */
-  def find(name: String): Option[(String,String)] = findByKeyField[DocNameDesc](name) match {
-    case h::_ => Some((h.name,h.description))
+  def find(name: String): Option[DocNameDesc] = findByKeyField[DocNameDesc](name) match {
+    case h::_ => Some(h)
     case _    => None
   }
 

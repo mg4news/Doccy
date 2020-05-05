@@ -3,10 +3,7 @@
 val ScalatestVersion  = "3.1.1"
 val ScalacheckVersion = "1.14.3"
 val LogbackVersion    = "1.2.3"
-
-// Plugin versions
-val KindProjectorVersion = "0.11.0"
-val BetterMonadicVersion = "0.3.1"
+val SprayJsonVersion  = "1.3.5"
 
 // Scala language version
 val ScalaVersion = "2.13.2"
@@ -22,6 +19,9 @@ lazy val root = (project in file(".")).settings(
     "ch.rasc"           % "bsoncodec"           % "1.0.1",
     "com.typesafe"      % "config"              % "1.4.0",
     "ch.qos.logback"    % "logback-classic"     % LogbackVersion,
+
+    // JSON, HTTP, etc stuff
+    "io.spray"          %% "spray-json"         % SprayJsonVersion,
 
     // My test dependencies
     "org.scalatest"     %% "scalatest"          % ScalatestVersion % "test",

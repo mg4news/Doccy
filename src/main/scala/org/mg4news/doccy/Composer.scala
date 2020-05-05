@@ -16,18 +16,67 @@
 // ==============================================================================================
 package org.mg4news.doccy
 
+import spray.json._
+import DefaultJsonProtocol._
+
+object MyJsonProtocol extends DefaultJsonProtocol {
+  implicit object DocNameDescJsonFormat extends RootJsonFormat[DocNameDesc] {
+    def write(dnc: DocNameDesc): JsObject = JsObject(
+      "name" -> JsString(dnc.name),
+      "description" -> JsString(dnc.description)
+    )
+    def read(value:JsValue): DocNameDesc = {
+      value.asJsObject.getFields("name", "description") match {
+        case Seq(JsString(name), JsString(description)) => DocNameDesc(name,description)
+        case _ => throw new DeserializationException("(name,description) pair expected")
+      }
+    }
+  }
+
+  implicit object DocDocJsonFormat extends RootJsonFormat[DocDoc] {
+    def write(dd: DocDoc): JsObject = JsObject(
+      "name" -> JsString(dd.name),
+      "description" -> JsString(dd.description),
+      "author" -> JsString(dd.author),
+      "proj" -> JsString(dd.proj),
+      "category" -> JsString(dd.category),
+      "topics" -> dd.topics.toJson,
+      "created" -> JsString(dd.created.toString)
+    )
+    def read(value: JsValue): DocDoc = {
+      value.asJsObject.getFields("name", "description", "author", "proj", "category", "topics") match {
+        case Seq(JsString(name), JsString(description), JsString(author), JsString(proj), JsString(category), JsArray(topics)) =>
+          DocDoc(name,description,author,proj,category,topics.map(_.convertTo[String]).toSet)
+      }
+    }
+  }
+}
+
 // Composes functionality from the various Mongo schema objects.
 // This is the object that the rest of the program interacts with. It hides the
 // details of the schema
 object Composer {
-  // Each of these functions produces a Seq of the name field from each of
-  // the various building blocks classes. This is something that can be used by
-  // a web page or UX
-  def getDocList(): Seq[String] = Docs.getAll.map(_.name)
-  def getAuthorList(): Seq[String] = Authors.getAll.map(_.name)
-  def getCategoryList(): Seq[String] = Categories.getAll.map(_.name)
-  def getTopicList(): Seq[String] = Topics.getAll.map(_.name)
-  def getProjectList(): Seq[String] = Projects.getAll.map(_.name)
+  import MyJsonProtocol._
+
+  // Doc getters.
+  def getDocList: JsValue = Docs.getAll.toJson
+
+  // For the rest, three forms:
+  // - get all, no parameters
+  // - get (find) by name
+  // - set by name
+
+  def getAuthorList: JsValue = Authors.getAll.toJson
+  def getAuthor(name: String): JsValue = Authors.find(name).toJson
+
+  def getCategoryList: JsValue = Categories.getAll.toJson
+  def getCategory(name: String): JsValue = Categories.find(name).toJson
+
+  def getTopicList: JsValue = Topics.getAll.toJson
+  def getTopic(name: String): JsValue = Topics.find(name).toJson
+
+  def getProjectList: JsValue = Projects.getAll.toJson
+  def getProject(name: String): JsValue = Projects.find(name).toJson
 
   // Update or add. This set covers the simple cases (authors, cat, topic, proj)
   def setAuthor(name: String, desc: String): Unit = Authors.addOne(name,desc)
