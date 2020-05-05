@@ -3,7 +3,6 @@
 val ScalatestVersion  = "3.1.1"
 val ScalacheckVersion = "1.14.3"
 val LogbackVersion    = "1.2.3"
-val SprayJsonVersion  = "1.3.5"
 
 // Scala language version
 val ScalaVersion = "2.13.2"
@@ -21,7 +20,6 @@ lazy val root = (project in file(".")).settings(
     "ch.qos.logback"    % "logback-classic"     % LogbackVersion,
 
     // JSON, HTTP, etc stuff
-    "io.spray"          %% "spray-json"         % SprayJsonVersion,
 
     // My test dependencies
     "org.scalatest"     %% "scalatest"          % ScalatestVersion % "test",

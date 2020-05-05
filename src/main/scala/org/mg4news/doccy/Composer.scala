@@ -16,74 +16,34 @@
 // ==============================================================================================
 package org.mg4news.doccy
 
-import spray.json._
-import DefaultJsonProtocol._
-
-object MyJsonProtocol extends DefaultJsonProtocol {
-  implicit object DocNameDescJsonFormat extends RootJsonFormat[DocNameDesc] {
-    def write(dnc: DocNameDesc): JsObject = JsObject(
-      "name" -> JsString(dnc.name),
-      "description" -> JsString(dnc.description)
-    )
-    def read(value:JsValue): DocNameDesc = {
-      value.asJsObject.getFields("name", "description") match {
-        case Seq(JsString(name), JsString(description)) => DocNameDesc(name,description)
-        case _ => throw new DeserializationException("(name,description) pair expected")
-      }
-    }
-  }
-
-  implicit object DocDocJsonFormat extends RootJsonFormat[DocDoc] {
-    def write(dd: DocDoc): JsObject = JsObject(
-      "name" -> JsString(dd.name),
-      "description" -> JsString(dd.description),
-      "author" -> JsString(dd.author),
-      "proj" -> JsString(dd.proj),
-      "category" -> JsString(dd.category),
-      "topics" -> dd.topics.toJson,
-      "created" -> JsString(dd.created.toString)
-    )
-    def read(value: JsValue): DocDoc = {
-      value.asJsObject.getFields("name", "description", "author", "proj", "category", "topics") match {
-        case Seq(JsString(name), JsString(description), JsString(author), JsString(proj), JsString(category), JsArray(topics)) =>
-          DocDoc(name,description,author,proj,category,topics.map(_.convertTo[String]).toSet)
-      }
-    }
-  }
-}
-
 // Composes functionality from the various Mongo schema objects.
 // This is the object that the rest of the program interacts with. It hides the
 // details of the schema
 object Composer {
-  import MyJsonProtocol._
+  import DoccyJsonProtocol._
 
   // Doc getters.
-  def getDocList: JsValue = Docs.getAll.toJson
+  def getDocList = Docs.getAll
 
   // For the rest, three forms:
   // - get all, no parameters
   // - get (find) by name
   // - set by name
 
-  def getAuthorList: JsValue = Authors.getAll.toJson
-  def getAuthor(name: String): JsValue = Authors.find(name).toJson
-
-  def getCategoryList: JsValue = Categories.getAll.toJson
-  def getCategory(name: String): JsValue = Categories.find(name).toJson
-
-  def getTopicList: JsValue = Topics.getAll.toJson
-  def getTopic(name: String): JsValue = Topics.find(name).toJson
-
-  def getProjectList: JsValue = Projects.getAll.toJson
-  def getProject(name: String): JsValue = Projects.find(name).toJson
-
-  // Update or add. This set covers the simple cases (authors, cat, topic, proj)
+  def getAuthorList = Authors.getAll
+  def getAuthor(name: String) = Authors.find(name)
   def setAuthor(name: String, desc: String): Unit = Authors.addOne(name,desc)
-  def setCategory(name: String, desc: String): Unit = Categories.addOne(name,desc)
-  def setTopic(name: String, desc: String): Unit = Topics.addOne(name,desc)
-  def setProject(name: String, desc: String): Unit = Projects.addOne(name,desc)
 
-  // Update or add a document
+  def getCategoryList = Categories.getAll
+  def getCategory(name: String) = Categories.find(name)
+  def setCategory(name: String, desc: String): Unit = Categories.addOne(name,desc)
+
+  def getTopicList = Topics.getAll
+  def getTopic(name: String) = Topics.find(name)
+  def setTopic(name: String, desc: String): Unit = Topics.addOne(name,desc)
+
+  def getProjectList = Projects.getAll
+  def getProject(name: String) = Projects.find(name)
+  def setProject(name: String, desc: String): Unit = Projects.addOne(name,desc)
 
 }

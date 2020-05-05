@@ -16,8 +16,6 @@
 // ==============================================================================================
 package org.mg4news.doccy
 
-import Helpers._
-
 object Mockit {
   def load(): Unit = {
     if (Categories.number == 0) {
@@ -52,13 +50,14 @@ object Main extends App {
   DB.printCollections()
 
   // Do stuff
-  println(s"Authors: ${Composer.getAuthorList.prettyPrint}")
+  println(s"Authors: ${Composer.getAuthorList}")
   println(s"Find author = mgibson => ${Composer.getAuthor("mgibson")}")
   println(s"Find author = dindong => ${Composer.getAuthor("dingdong")}")
   println(" ")
-  println(s"Categories: ${Composer.getCategoryList.prettyPrint}")
+  println(s"Categories: ${Composer.getCategoryList}")
   println(" ")
-  println(s"Topics: ${Composer.getTopicList.prettyPrint}")
+  println(s"Topics: ${Composer.getTopicList}")
+
 
   // Until HTTP4S is in place, kill all collections on exit..
   Mockit.unload()
