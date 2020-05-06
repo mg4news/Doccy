@@ -3,6 +3,7 @@
 val ScalatestVersion  = "3.1.1"
 val ScalacheckVersion = "1.14.3"
 val LogbackVersion    = "1.2.3"
+val ArgonautVersion   = "6.3.0"
 
 // Scala language version
 val ScalaVersion = "2.13.2"
@@ -20,6 +21,7 @@ lazy val root = (project in file(".")).settings(
     "ch.qos.logback"    % "logback-classic"     % LogbackVersion,
 
     // JSON, HTTP, etc stuff
+    "io.argonaut"       %% "argonaut"           % ArgonautVersion,
 
     // My test dependencies
     "org.scalatest"     %% "scalatest"          % ScalatestVersion % "test",

@@ -28,6 +28,7 @@ import Helpers._
 object DocNameDesc {
   def apply(name: String, description: String): DocNameDesc =
     DocNameDesc(new ObjectId(), name, description)
+
 }
 case class DocNameDesc(_id: ObjectId, name: String, description: String = "None")
 

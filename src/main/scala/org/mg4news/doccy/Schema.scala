@@ -21,23 +21,36 @@ import org.mongodb.scala.model.Filters.equal
 import scala.reflect.ClassTag
 import Helpers._
 
-// Base trait to generalise some of the logic for each document. It may well be a massive intellectual snark hunt,
-// especially given the classtag hoops I had to jump through to make some of this work. But..
-// - I learned about classtags and type erasure
-// - there is some reusability
-// - I feel good about at least giving a shit..
+/**
+ * Base trait to generalise some of the logic for each document. It may well be a massive intellectual snark hunt,
+ * especially given the classtag hoops I had to jump through to make some of this work. But..
+ * - I learned about classtags and type erasure
+ * - there is some reusability
+ * - I feel good about at least giving a shit..
+ * @tparam T Any class type that works as a Mongo document
+ */
 trait Schema[T] {
   val collection: MongoCollection[T]
   val COLL_NAME: String
   val KEY_FIELD: String
 
-  // Counts the number of elements in the collection
+  /**
+   * Counts the number of elements in the collection
+   * @return
+   */
   def number: Long = collection.countDocuments().result()
 
-  // Kill the entire collection
+  /**
+   * Kill the entire collection
+   */
   def destroy(): Unit = collection.drop().printResults()
 
-  // Gets all the documents in the colelction
+  /**
+   * Gets all the documents in the colelction
+   * @param t class tag (IMPLICIT!!)
+   * @tparam T class type
+   * @return Sequence of objects of type T
+   */
   def getAllDocs[T](implicit t:ClassTag[T]): Seq[T] =
     collection.find[T]().results()
 

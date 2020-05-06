@@ -41,4 +41,9 @@ object MockData {
     ("Scala", "Related to Scala or Dotty (Scala 3)"),
     ("Streaming", "Related to media streaming, i.e. CMAF, DASH")
   )
+
+  val docs: Seq[(String,String,String,String,String,Set[String])] = Seq(
+    ("ADK PRD", "High level ADK product requirements", "mgibson", "ADK", "PRD", Set("Streaming", "Brewing")),
+    ("Doccy design", "Static and dynamic deisgn specification", "mgibson", "Doccy", "ADD", Set("Streaming", "Scala"))
+  )
 }
