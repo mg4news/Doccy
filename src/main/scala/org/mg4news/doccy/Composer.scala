@@ -19,11 +19,17 @@ package org.mg4news.doccy
 import argonaut._
 import Argonaut._
 
-// Composes functionality from the various Mongo schema objects.
-// This is the object that the rest of the program interacts with. It hides the
-// details of the schema
+/**
+ * Composes functionality from the various Mongo schema objects.
+ * This is the object that the rest of the program interacts with. It hides the
+ * details of the schema
+ */
 object Composer {
   import MyJsonCodecs._
+
+  //TODO Once the HTTP support is added, may use JsonRequest.
+  // Need to rethink this section and use "unfiltered"
+  // see http://argonaut.io/doc/integration/
 
   // Doc getters and setters
   def getDocList: Json = Docs.getAll.toList.asJson

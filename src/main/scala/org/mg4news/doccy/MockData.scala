@@ -46,4 +46,88 @@ object MockData {
     ("ADK PRD", "High level ADK product requirements", "mgibson", "ADK", "PRD", Set("Streaming", "Brewing")),
     ("Doccy design", "Static and dynamic deisgn specification", "mgibson", "Doccy", "ADD", Set("Streaming", "Scala"))
   )
+
+  // load the data
+  def load(): Unit = {
+    if (Categories.number == 0) {
+      Categories.add(categories)
+      assert(Categories.number == categories.length)
+    }
+    if (Authors.number == 0) {
+      Authors.add(authors)
+      assert(Authors.number == authors.length)
+    }
+    if (Topics.number == 0) {
+      Topics.add(topics)
+      assert(Topics.number == topics.length)
+    }
+    if (Docs.number == 0) {
+      Docs.add(docs.map(t => DocDoc(t._1,t._2,t._3,t._4,t._5,t._6)))
+      assert(Docs.number == docs.length)
+    }
+  }
+
+  // Unload the data
+  def unload(): Unit = {
+    Categories.destroy()
+    assert(Categories.number == 0)
+    Authors.destroy()
+    assert(Authors.number == 0)
+    Topics.destroy()
+    assert(Topics.number == 0)
+    Docs.destroy()
+    assert(Docs.number == 0)
+  }
+
+  // Various tests on the mock data
+  def test(): Unit = {
+    import MyJsonCodecs._
+
+    val json1 = """
+    { "name" : "dtrump", "description" : "Donald Trump"}
+  """
+    val json2 = """
+    { "name" : "seinfeld", "descraption" : "Jerry Seinfeld"}
+  """
+    val json3 = """
+    { "name" : "rr", "description" : "Rob Roy". "country" : "Scotland"}
+  """
+    val json4 = """
+    { "name" : "joeblogs"}
+  """
+
+    println(s"Authors: ${Composer.getAuthorList.spaces2}")
+    println(s"Find author = mgibson => ${Composer.getAuthor("mgibson").spaces2}")
+    println(s"Find author = dindong => ${Composer.getAuthor("dingdong").spaces2}")
+    println(" ")
+    println("Testing the decoding..")
+    Composer.setAuthor(json1)
+    Composer.setAuthor(json2)
+    Composer.setAuthor(json3)
+    Composer.setAuthor(json4)
+    println(" ")
+    println(s"Categories: ${Composer.getCategoryList.spaces2}")
+    println(" ")
+    println(s"Topics: ${Composer.getTopicList.spaces2}")
+
+    println("Documents tests..")
+    println(s"All documents: ${Composer.getDocList.spaces2}")
+
+    val jsonDoc1 = Composer.getDoc("ADK PRD")
+    println(s" - Looking for ADK PRD: ${jsonDoc1.spaces2}")
+    val jsonDoc2 = Composer.getDoc("ADK PDR")
+    println(s" - Looking for ADK PDR: ${jsonDoc2.spaces2}")
+
+    println(jsonDoc1.as[DocDoc])
+    println(jsonDoc2.as[DocDoc])
+
+    jsonDoc1.as[DocDoc].result match {
+      case Left(_) => println("Cant convert from JSON")
+      case Right(d) =>
+        println("Modify the doc..")
+        Docs.addOne(DocDoc(d.name,d.description,"bthornton",d.proj,d.category,d.topics))
+    }
+    println(s"All documents: ${Composer.getDocList.spaces2}")
+
+  }
 }

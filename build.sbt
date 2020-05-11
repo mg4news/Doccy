@@ -1,9 +1,12 @@
 // Library versions
 
-val ScalatestVersion  = "3.1.1"
-val ScalacheckVersion = "1.14.3"
-val LogbackVersion    = "1.2.3"
-val ArgonautVersion   = "6.3.0"
+val ScalatestVersion    = "3.1.1"
+val ScalacheckVersion   = "1.14.3"
+val LogbackVersion      = "1.2.3"
+val ScalaLoggingVersion = "3.9.2"
+val ArgonautVersion     = "6.3.0"
+val AkkaHttpVersion     = "10.1.11"
+val AkkaStreamVersion   = "2.6.5"
 
 // Scala language version
 val ScalaVersion = "2.13.2"
@@ -15,13 +18,16 @@ lazy val root = (project in file(".")).settings(
   scalaVersion := ScalaVersion,
   libraryDependencies ++= Seq(
     // Main application stuff
-    "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
-    "ch.rasc"           % "bsoncodec"           % "1.0.1",
-    "com.typesafe"      % "config"              % "1.4.0",
-    "ch.qos.logback"    % "logback-classic"     % LogbackVersion,
+    "org.mongodb.scala"          %% "mongo-scala-driver" % "2.9.0",
+    "ch.rasc"                    % "bsoncodec"           % "1.0.1",
+    "com.typesafe"               % "config"              % "1.4.0",
+    "ch.qos.logback"             % "logback-classic"     % LogbackVersion,
+    "com.typesafe.scala-logging" %% "scala-logging"      % ScalaLoggingVersion,
 
     // JSON, HTTP, etc stuff
     "io.argonaut"       %% "argonaut"           % ArgonautVersion,
+    "com.typesafe.akka" %% "akka-http"          % AkkaHttpVersion,
+    "com.typesafe.akka" %% "akka-stream"        % AkkaStreamVersion,
 
     // My test dependencies
     "org.scalatest"     %% "scalatest"          % ScalatestVersion % "test",

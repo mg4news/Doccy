@@ -55,6 +55,8 @@ case class DocDoc(
   topics: Set[String],
   created: LocalDateTime) {
 
+  //TODO Add the logic for the DOC ID
+
   // Generates the immutable ID
   def generateID(): String = ???
 
