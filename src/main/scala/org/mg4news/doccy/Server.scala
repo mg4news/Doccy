@@ -54,7 +54,7 @@ object Server extends App with LazyLogging {
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
   // Create routes for server up and server version
-  val routes: Route = MyNameDescRoutes.routes ~ ServerRoutes.routes()
+  val routes: Route = NameDescRoutes.routes ~ ServerRoutes.routes()
 
   val httpServerFuture: Future[Http.ServerBinding] = Http().bindAndHandle(
     routes,

@@ -24,7 +24,7 @@ import argonaut._
 import Argonaut._
 import akka.http.scaladsl.model.StatusCodes
 
-object MyNameDescRoutes extends ArgonautSupport with LazyLogging {
+object NameDescRoutes extends ArgonautSupport with LazyLogging {
   import MyJsonCodecs._
 
   /**
