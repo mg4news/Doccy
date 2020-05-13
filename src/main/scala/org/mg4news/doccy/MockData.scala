@@ -42,6 +42,11 @@ object MockData {
     ("Streaming", "Related to media streaming, i.e. CMAF, DASH")
   )
 
+  val projects: Seq[(String,String)] = Seq(
+    ("ADK", "ADK related"),
+    ("Floor", "Project to lqy new laminate flooring")
+  )
+
   val docs: Seq[(String,String,String,String,String,Set[String])] = Seq(
     ("ADK PRD", "High level ADK product requirements", "mgibson", "ADK", "PRD", Set("Streaming", "Brewing")),
     ("Doccy design", "Static and dynamic deisgn specification", "mgibson", "Doccy", "ADD", Set("Streaming", "Scala"))
@@ -77,57 +82,5 @@ object MockData {
     assert(Topics.number == 0)
     Docs.destroy()
     assert(Docs.number == 0)
-  }
-
-  // Various tests on the mock data
-  def test(): Unit = {
-    import MyJsonCodecs._
-
-    val json1 = """
-    { "name" : "dtrump", "description" : "Donald Trump"}
-  """
-    val json2 = """
-    { "name" : "seinfeld", "descraption" : "Jerry Seinfeld"}
-  """
-    val json3 = """
-    { "name" : "rr", "description" : "Rob Roy". "country" : "Scotland"}
-  """
-    val json4 = """
-    { "name" : "joeblogs"}
-  """
-
-    println(s"Authors: ${Composer.getAuthorList.spaces2}")
-    println(s"Find author = mgibson => ${Composer.getAuthor("mgibson").spaces2}")
-    println(s"Find author = dindong => ${Composer.getAuthor("dingdong").spaces2}")
-    println(" ")
-    println("Testing the decoding..")
-    Composer.setAuthor(json1)
-    Composer.setAuthor(json2)
-    Composer.setAuthor(json3)
-    Composer.setAuthor(json4)
-    println(" ")
-    println(s"Categories: ${Composer.getCategoryList.spaces2}")
-    println(" ")
-    println(s"Topics: ${Composer.getTopicList.spaces2}")
-
-    println("Documents tests..")
-    println(s"All documents: ${Composer.getDocList.spaces2}")
-
-    val jsonDoc1 = Composer.getDoc("ADK PRD")
-    println(s" - Looking for ADK PRD: ${jsonDoc1.spaces2}")
-    val jsonDoc2 = Composer.getDoc("ADK PDR")
-    println(s" - Looking for ADK PDR: ${jsonDoc2.spaces2}")
-
-    println(jsonDoc1.as[DocDoc])
-    println(jsonDoc2.as[DocDoc])
-
-    jsonDoc1.as[DocDoc].result match {
-      case Left(_) => println("Cant convert from JSON")
-      case Right(d) =>
-        println("Modify the doc..")
-        Docs.addOne(DocDoc(d.name,d.description,"bthornton",d.proj,d.category,d.topics))
-    }
-    println(s"All documents: ${Composer.getDocList.spaces2}")
-
   }
 }

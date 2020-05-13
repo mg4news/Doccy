@@ -22,20 +22,25 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import com.typesafe.scalalogging.LazyLogging
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
+import de.heikoseeberger.akkahttpargonaut.ArgonautSupport
 
-import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.io.StdIn
 import scala.util.{Failure, Success}
 
-object ServerVersion {
-  def route(): Route = {
-    path("server-version") {
+object ServerRoutes {
+  def versionRoute(): Route = {
+    path("version") {
       get {
         val serverVersion = srv_config.getString("version")
         complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, serverVersion))
       }
     }
   }
+  def upRoute(): Route = get {
+    complete("Doccy HTTP server is UP!")
+  }
+  def routes() = versionRoute() ~ upRoute()
 }
 
 object Server extends App with LazyLogging {
@@ -44,25 +49,20 @@ object Server extends App with LazyLogging {
   MockData.load()
   DB.printCollections()
 
+  // Implicits: actor system and system dispatcher
   implicit val system: ActorSystem = ActorSystem("doccy-http-rest-server")
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
   // Create routes for server up and server version
-  // chain (~) them
-  val serverVerRoute = ServerVersion.route()
-  val serverUpRoute: Route = get {
-    complete("Doccy HTTP server is UP!")
-  }
-  val routes: Route = serverVerRoute ~ serverUpRoute
+  val routes: Route = MyNameDescRoutes.routes ~ ServerRoutes.routes()
 
-  val httpServerFuture = Http().bindAndHandle(
+  val httpServerFuture: Future[Http.ServerBinding] = Http().bindAndHandle(
     routes,
     srv_config.getString("host"),
     srv_config.getInt("port"))
   httpServerFuture.onComplete {
     case Success(binding) =>
       logger.info(s"Doccy Http Server is UP and is bound to ${binding.localAddress}")
-
     case Failure(e) =>
       logger.error(s"Doccy Http server failed to start", e)
       system.terminate()

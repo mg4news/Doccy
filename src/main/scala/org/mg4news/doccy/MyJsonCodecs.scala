@@ -28,7 +28,7 @@ object MyJsonCodecs {
    * Encodes a DocNameDesc to JSON, ignores the ID field
    * @return JSON
    */
-  implicit def DocNameDescEncodeJson: EncodeJson[DocNameDesc] =
+  implicit def docNameDescEncodeJson: EncodeJson[DocNameDesc] =
     EncodeJson((nd: DocNameDesc) =>
       ("name" := nd.name) ->: ("description" := nd.description) ->: jEmptyObject)
 
@@ -36,13 +36,13 @@ object MyJsonCodecs {
    * Decodes a JSON to a DocNameDesc
    * @return DocNameDesc
    */
-  implicit def DocNameDescDecodeJson: DecodeJson[DocNameDesc] =
+  implicit def docNameDescDecodeJson: DecodeJson[DocNameDesc] =
     DecodeJson(c => for {
       name <- (c --\ "name").as[String]
       description <- (c --\ "description").as[String]
     } yield DocNameDesc(name,description))
 
-  implicit def DocEncodeJson: EncodeJson[DocDoc] =
+  implicit def docEncodeJson: EncodeJson[DocDoc] =
     EncodeJson((d: DocDoc) => ("name" := d.name) ->:
       ("description" := d.description) ->:
       ("author" := d.author) ->:
@@ -52,7 +52,7 @@ object MyJsonCodecs {
       ("created" := d.created.toString) ->:
       jEmptyObject)
 
-  implicit def DocDecodeJson: DecodeJson[DocDoc] =
+  implicit def docDecodeJson: DecodeJson[DocDoc] =
     DecodeJson(c => for {
       name        <- (c --\ "name").as[String]
       description <- (c --\ "description").as[String]

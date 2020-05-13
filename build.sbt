@@ -5,7 +5,7 @@ val ScalacheckVersion   = "1.14.3"
 val LogbackVersion      = "1.2.3"
 val ScalaLoggingVersion = "3.9.2"
 val ArgonautVersion     = "6.3.0"
-val AkkaHttpVersion     = "10.1.11"
+val AkkaHttpVersion     = "10.1.12"
 val AkkaStreamVersion   = "2.6.5"
 
 // Scala language version
@@ -26,6 +26,7 @@ lazy val root = (project in file(".")).settings(
 
     // JSON, HTTP, etc stuff
     "io.argonaut"       %% "argonaut"           % ArgonautVersion,
+    "de.heikoseeberger" %% "akka-http-argonaut" % "1.32.0",
     "com.typesafe.akka" %% "akka-http"          % AkkaHttpVersion,
     "com.typesafe.akka" %% "akka-stream"        % AkkaStreamVersion,
 
