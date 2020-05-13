@@ -79,8 +79,8 @@ object NameDescRoutes extends ArgonautSupport with LazyLogging {
   }
 
   // Published routes
-  val routes: Route = routeAllNd(Authors, "authors") ~ routeGetNd(Authors, "author") ~ routeAddNd(Authors, "author")
-    routeAllNd(Categories, "categories") ~ routeGetNd(Categories, "category") ~ routeAddNd(Categories, "category")
-    routeAllNd(Projects, "projects") ~ routeGetNd(Projects, "project") ~ routeAddNd(Projects, "project")
+  val routes: Route = routeAllNd(Authors, "authors") ~ routeGetNd(Authors, "author") ~ routeAddNd(Authors, "author") ~
+    routeAllNd(Categories, "categories") ~ routeGetNd(Categories, "category") ~ routeAddNd(Categories, "category") ~
+    routeAllNd(Projects, "projects") ~ routeGetNd(Projects, "project") ~ routeAddNd(Projects, "project") ~
     routeAllNd(Topics, "topics") ~ routeGetNd(Topics, "topic") ~ routeAddNd(Topics, "topic")
 }
