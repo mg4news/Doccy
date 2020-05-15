@@ -17,7 +17,6 @@
 package org.mg4news.doccy
 
 import java.util.concurrent.TimeUnit
-
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import org.mongodb.scala._
