@@ -29,6 +29,8 @@ lazy val root = (project in file(".")).settings(
     "de.heikoseeberger" %% "akka-http-argonaut" % "1.32.0",
     "com.typesafe.akka" %% "akka-http"          % AkkaHttpVersion,
     "com.typesafe.akka" %% "akka-stream"        % AkkaStreamVersion,
+    "com.typesafe.akka" %% "akka-http-testkit"  % AkkaHttpVersion,
+    "com.typesafe.akka" %% "akka-testkit"       % "2.6.5",
 
     // My test dependencies
     "org.scalatest"     %% "scalatest"          % ScalatestVersion % "test",

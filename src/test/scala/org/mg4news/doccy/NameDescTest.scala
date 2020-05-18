@@ -20,12 +20,12 @@ import org.scalatest._
 import org.mongodb.scala.MongoCollection
 import org.scalatest.featurespec.AnyFeatureSpec
 
-object GenNameDesc extends NameDescSchema {
-  val COLL_NAME: String = "TEST_NAME_DESC_COLLECTION"
-  val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
-}
 
 class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
+  object TestNDT extends NameDescSchema {
+    val COLL_NAME: String = "TEST_NAME_DESC_COLLECTION"
+    val collection: MongoCollection[DocNameDesc] = DB.getDb.getCollection(COLL_NAME)
+  }
 
   Feature("Basic functionality tests for NameDescSchema") {
 
@@ -37,58 +37,58 @@ class NameDescTest extends AnyFeatureSpec with GivenWhenThen{
     Scenario("Ensure the collection is empty to begin") {
       Given("any set of starting conditions")
       When("destroy() is called")
-      GenNameDesc.destroy()
+      TestNDT.destroy()
       Then("the collection should be empty")
-      assert(GenNameDesc.number == 0)
+      assert(TestNDT.number == 0)
       info(" ")
     }
 
     Scenario("Test single insertion into collection") {
       Given("the collection is empty")
-      assert(GenNameDesc.number == 0)
+      assert(TestNDT.number == 0)
       When("a name::description is inserted")
       val name = TestData.full.head._1
       val desc = TestData.full.head._2
-      GenNameDesc.addOne(name,desc)
+      TestNDT.addOne(name,desc)
       Then("the collection contains only the inserted data")
-      assert(GenNameDesc.number == 1)
-      assert(GenNameDesc.contains(name))
-      assert(GenNameDesc.find(name).isDefined)
+      assert(TestNDT.number == 1)
+      assert(TestNDT.contains(name))
+      assert(TestNDT.find(name).isDefined)
       val bad = TestData.bad.head
-      assert(!GenNameDesc.contains(bad))
-      assert(GenNameDesc.find(bad).isEmpty)
+      assert(!TestNDT.contains(bad))
+      assert(TestNDT.find(bad).isEmpty)
       info(" ")
     }
 
     Scenario("Test multiple insertion with duplication checks") {
       Given("the collection is empty")
-      GenNameDesc.destroy()
-      assert(GenNameDesc.number == 0)
+      TestNDT.destroy()
+      assert(TestNDT.number == 0)
       When("a set with duplicate descriptions in inserted")
-      GenNameDesc.add(TestData.full)
+      TestNDT.add(TestData.full)
       Then("There are more than 0 entries in the collection")
-      assert(GenNameDesc.number > 0)
+      assert(TestNDT.number > 0)
       And("The collection contains no duplicates")
-      assert(GenNameDesc.number == TestData.dedup_size)
+      assert(TestNDT.number == TestData.dedup_size)
       And("all the correct entries exist")
       for (d <- TestData.dedup) {
-        assert(GenNameDesc.contains(d._1))
+        assert(TestNDT.contains(d._1))
       }
       And ("none of the wrong entries exist")
       for (s <- TestData.bad) {
-        assert(!GenNameDesc.contains(s))
+        assert(!TestNDT.contains(s))
       }
       info(" ")
     }
   }
 
   info("Collection sanity dump:")
-  for (s <- GenNameDesc.getAll) {
+  for (s <- TestNDT.getAll) {
     info(s" - $s")
   }
   info("Cleaning the collection")
-  GenNameDesc.destroy()
-  assert(GenNameDesc.number == 0)
+  TestNDT.destroy()
+  assert(TestNDT.number == 0)
 
   info(" ")
   info(" ")
