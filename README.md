@@ -7,6 +7,5 @@ Scala + MongoDB based document tracker
 
 This application does not actually put the documents themselves in the DB. It issues an ID, and tracks the ID in the database. The user embeds the ID in the document name (could be the entire document name, or part of it). Then you simply use the system to search for documents containing "ID"
 
-Future features would be:
-- a web interface to the app
-- link with underlying system, to allow search from the app
+## May 2019 Update
+Added a web service based on akka-http. Next step, develop a web frontend for the system. Time to learn typescript and Vue or React...
