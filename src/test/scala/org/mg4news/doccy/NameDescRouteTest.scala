@@ -32,18 +32,19 @@ class NameDescRouteTest extends AnyWordSpec with Matchers with ScalatestRouteTes
   }
 
   // Empty the DB, then add the "full" seq
-  val one: String = "GND"
-  val all: String = "GNDS"
   TestNDRT.destroy()
   TestNDRT.add(TestData.full)
 
   "The Doccy service" should {
+
     "return an UP message in response to a GET on the root path" in {
       Get() -> Server.upRoute -> check(responseAs[String] shouldEqual "Doccy HTTP server is UP!")
     }
-    s"return an version message (${srv_config.getString("version")}) in response to a GET on the version path" in {
+
+    s"return a version message (${srv_config.getString("version")}) in response to a GET on the version path" in {
       Get("version") -> Server.versionRoute -> check(responseAs[String] shouldEqual srv_config.getString("version"))
     }
+    
     "return a NotFound status if query results not found" in {
       Get("GND?name=jim") -> NameDescRoutes.routeGetNd(TestNDRT,"GND") -> check {
         status shouldEqual StatusCodes.NotFound
